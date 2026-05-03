@@ -9,8 +9,15 @@ interface Producto {
 }
 
 export default async function Home() {
-  const respuesta = await fetch("https://fakestoreapi.com/products?limit=9");
-  const productos: Producto[] = await respuesta.json();
+try {
+    const respuesta = await fetch("https://fakestoreapi.com/products?limit=9", {
+      // Esto le dice a Next.js que si falla, intente de nuevo o maneje el error
+      cache: 'no-store' 
+    });
+
+    if (!respuesta.ok) {
+      throw new Error("Error al conectar con la tienda");
+    }
 
   return (
     <main className="p-10 bg-gray-50 min-h-screen">
